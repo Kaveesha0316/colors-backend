@@ -32,4 +32,22 @@ public class HomeController {
         return responseDTO;
 
     }
+
+    @GetMapping(value = "/advanceSearch")
+    public ResponseDTO advanceSearchProduct(@RequestParam("searchText") String searchText,@RequestParam("category") String category,@RequestParam("startPrice") String startPrice,@RequestParam("endPrice") String endPrice,@RequestParam("sort") String sort) {
+        System.out.println(searchText);
+        System.out.println(category);
+        System.out.println(startPrice);
+        System.out.println(endPrice);
+
+        ResponseDTO responseDTO = new ResponseDTO();
+        responseDTO.setSuccess(true);
+
+        List<Product> productList = homeService.advanceSearchProducts(searchText,category,Double.parseDouble(startPrice),Double.parseDouble(endPrice),sort);
+        responseDTO.setContent(productList);
+//        System.out.println(productList);
+
+        return responseDTO;
+
+    }
 }

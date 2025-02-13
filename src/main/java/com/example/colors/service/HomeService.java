@@ -29,4 +29,14 @@ public class HomeService {
        return productList;
     }
 
+    public List<Product> advanceSearchProducts(String name, String categoryName, Double priceAfter, Double priceBefore,String sort) {
+        if (categoryName != null && categoryName.isEmpty()) {
+            categoryName = null; // Set to null if empty
+        }
+          List<Product> productList = productRepo.findProducts("active", name, categoryName, priceAfter, priceBefore,sort);
+    return productList;
+    }
+
+
+
 }

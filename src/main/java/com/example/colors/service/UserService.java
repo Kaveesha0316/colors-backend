@@ -61,6 +61,7 @@ public class UserService {
         user.setPassword(userDTO.getPassword());
         user.setAddress(userDTO.getAddress());
         user.setCity(userDTO.getCity());
+        user.setImage_path(userDTO.getImage_path());
 
        User updatedUser = userRepo.save(user);
 

@@ -8,6 +8,7 @@ public class UserDTO {
     private String mobile;
     private String address;
     private String city;
+    private String image_path;
 
     // Getters and Setters
     public String getName() { return name; }
@@ -49,6 +50,14 @@ public class UserDTO {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getImage_path() {
+        return image_path;
+    }
+
+    public void setImage_path(String image_path) {
+        this.image_path = image_path;
     }
 }
 
