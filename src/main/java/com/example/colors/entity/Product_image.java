@@ -12,13 +12,13 @@ public class Product_image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "image_path1",length = 45, nullable = false)
+    @Column(name = "image_path1", nullable = false)
     private String image_path1;
 
-    @Column(name = "image_path2",length = 45, nullable = false)
+    @Column(name = "image_path2", nullable = false)
     private String image_path2;
 
-    @Column(name = "image_path3",length = 45, nullable = false)
+    @Column(name = "image_path3", nullable = false)
     private String image_path3;
 
     @ManyToOne

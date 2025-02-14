@@ -30,4 +30,6 @@ public interface ProductRepo extends JpaRepository<Product,Integer> {
             @Param("priceBefore") Double priceBefore,
             @Param("sortBy") String sortBy
     );
+
+
 }
