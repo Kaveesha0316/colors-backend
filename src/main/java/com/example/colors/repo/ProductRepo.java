@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ProductRepo extends JpaRepository<Product,Integer> {
 
-    public List<Product> findProductByStatus_NameAndNameStartingWith(String status, String name);
+    public List<Product> findProductByStatus_NameAndNameStartingWithOrderByIdDesc(String status, String name);
 
     @Query("SELECT p FROM Product p " +
             "WHERE (:statusName IS NULL OR p.status.name = :statusName) " +
@@ -31,5 +31,12 @@ public interface ProductRepo extends JpaRepository<Product,Integer> {
             @Param("sortBy") String sortBy
     );
 
+    public List<Product> findProductsByUser_IdAndNameStartingWithOrderByIdDesc(Integer id,String name);
 
+
+    @Query("SELECT p FROM Product p WHERE p.category.name = :categoryName AND p.id != :productId")
+    List<Product> findProductsByCategoryNameAndExcludeProductId(
+            @Param("categoryName") String categoryName,
+            @Param("productId") Integer productId
+    );
 }

@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductImageRepo extends JpaRepository<Product_image,Integer> {
 
+    public Product_image findProduct_imageByProduct_id(Integer product_id);
 }

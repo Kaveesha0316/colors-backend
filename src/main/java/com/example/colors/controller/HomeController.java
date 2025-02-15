@@ -1,6 +1,7 @@
 package com.example.colors.controller;
 
 import com.example.colors.dto.ResponseDTO;
+import com.example.colors.dto.ReturnProductDTO;
 import com.example.colors.entity.Product;
 import com.example.colors.service.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class HomeController {
         ResponseDTO responseDTO = new ResponseDTO();
         responseDTO.setSuccess(true);
 
-        List<Product> productList = homeService.SearchAllProducts(searchText);
+        List<ReturnProductDTO> productList = homeService.SearchAllProducts(searchText);
         responseDTO.setContent(productList);
         System.out.println(responseDTO);
         System.out.println(searchText);
@@ -43,7 +44,7 @@ public class HomeController {
         ResponseDTO responseDTO = new ResponseDTO();
         responseDTO.setSuccess(true);
 
-        List<Product> productList = homeService.advanceSearchProducts(searchText,category,Double.parseDouble(startPrice),Double.parseDouble(endPrice),sort);
+        List<ReturnProductDTO> productList = homeService.advanceSearchProducts(searchText,category,Double.parseDouble(startPrice),Double.parseDouble(endPrice),sort);
         responseDTO.setContent(productList);
 //        System.out.println(productList);
 

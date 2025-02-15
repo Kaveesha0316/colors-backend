@@ -5,9 +5,9 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "order")
-public class Order {
-    public Order() {
+@Table(name = "orders")
+public class Orders {
+    public Orders() {
     }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
