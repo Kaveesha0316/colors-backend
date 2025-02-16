@@ -1,6 +1,7 @@
 package com.example.colors.repo;
 
 import com.example.colors.entity.Order_item;
+import com.example.colors.entity.Orders;
 import com.example.colors.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,4 +13,5 @@ public interface OrderItemRepo extends JpaRepository<Order_item,Integer> {
 
 
     List<Order_item> findOrder_itemsByProduct(@Param("product") Product product);
+    List<Order_item> findOrder_itemsByOrders(@Param("orders") Orders orders);
 }

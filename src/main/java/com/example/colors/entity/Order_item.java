@@ -20,7 +20,7 @@ public class Order_item {
     private Double price;
 
     @ManyToOne
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "orders_id")
     private Orders orders;
 
     @ManyToOne
@@ -55,11 +55,11 @@ public class Order_item {
         this.price = price;
     }
 
-    public Orders getOrder() {
+    public Orders getOrders() {
         return orders;
     }
 
-    public void setOrder(Orders order) {
+    public void setOrders(Orders order) {
         this.orders = order;
     }
 

@@ -1,9 +1,12 @@
 package com.example.colors.service;
 
+import com.example.colors.dto.Cart_DTO;
 import com.example.colors.entity.Cart;
 import com.example.colors.entity.Product;
+import com.example.colors.entity.Product_image;
 import com.example.colors.entity.User;
 import com.example.colors.repo.CartRepo;
+import com.example.colors.repo.ProductImageRepo;
 import com.example.colors.repo.ProductRepo;
 import com.example.colors.repo.UserRepo;
 import jakarta.transaction.Transactional;
@@ -11,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @Transactional
@@ -19,6 +24,9 @@ public class CartService {
 
     @Autowired
     ProductRepo productRepo;
+
+    @Autowired
+    ProductImageRepo productImageRepo;
 
     @Autowired
     CartRepo cartRepo;
@@ -47,6 +55,51 @@ public class CartService {
             return "Updated";
         }
 
+    }
+
+    public List<Cart_DTO> findCartByUser_Id(Integer user_id) {
+       List<Cart> cartList = cartRepo.findCartByUser_IdOrderByDateDesc(user_id);
+       List<Cart_DTO> cartDTOList = new ArrayList<>();
+       for (Cart cart : cartList) {
+           Cart_DTO cartDTO = new Cart_DTO();
+           cartDTO.setId(cart.getId());
+           cartDTO.setProduct_name(cart.getProduct().getName());
+           cartDTO.setProduct_price(cart.getProduct().getPrice());
+           cartDTO.setProduct_Id(cart.getProduct().getId());
+
+           Product product = productRepo.findById(cart.getProduct().getId()).get();
+
+          Product_image productImage = productImageRepo.findProduct_imageByProduct_id(product.getId());
+          cartDTO.setProduct_imagepath(productImage.getImage_path1());
+
+           cartDTO.setQty(String.valueOf(cart.getQty()));
+           cartDTOList.add(cartDTO);
+
+       }
+        return cartDTOList;
+    }
+    public boolean deleteCart(String cartItemId) {
+        cartRepo.deleteById(Integer.parseInt(cartItemId));
+        return true;
+    }
+    public String updateToCart(String qty, String product_id,String user_id,String status) {
+
+        Cart existCart = cartRepo.findCartByUser_IdAndProduct_Id(Integer.parseInt(user_id), Integer.parseInt(product_id));
+
+        if (status.equals("up")) {
+            Product product = productRepo.findById(Integer.parseInt(product_id)).get();
+            if (product.getQty() >= Integer.parseInt(existCart.getQty()) + 1) {
+                existCart.setQty(String.valueOf(Integer.parseInt(existCart.getQty()) + Integer.parseInt(qty)));
+                cartRepo.save(existCart);
+                return "Updated";
+            } else {
+                return "not enough qty";
+            }
+        }else {
+                existCart.setQty(String.valueOf(Integer.parseInt(existCart.getQty()) - Integer.parseInt(qty)));
+                cartRepo.save(existCart);
+                return "Updated";
+        }
 
 
 
