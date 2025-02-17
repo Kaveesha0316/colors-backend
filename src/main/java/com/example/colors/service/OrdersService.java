@@ -1,7 +1,9 @@
 package com.example.colors.service;
 
+import com.example.colors.dto.CustomerOrderDTO;
 import com.example.colors.dto.MyOrderDTO;
 import com.example.colors.entity.Order_item;
+import com.example.colors.entity.Order_status;
 import com.example.colors.entity.Orders;
 import com.example.colors.entity.Product_image;
 import com.example.colors.repo.*;
@@ -39,7 +41,7 @@ public class OrdersService {
         List<MyOrderDTO> myOrderDTOS = new ArrayList<>();
         for (Orders order : orders) {
 
-           List<Order_item> orderItemList = orderItemRepo.findOrder_itemsByOrders(order);
+           List<Order_item> orderItemList = orderItemRepo.findOrder_itemsByOrdersAndProduct_NameStartingWith(order,"");
            for (Order_item orderItem : orderItemList) {
 
                MyOrderDTO myOrderDTO = new MyOrderDTO();
@@ -61,4 +63,69 @@ public class OrdersService {
 
         return null;
     }
+
+    public List<CustomerOrderDTO> loadCustomerOrders(String userId, String searchText) {
+
+        List<Orders> orders = orderRepo.findByUser_IdNotOrderByIdDesc(Integer.parseInt(userId));
+        if (orders != null) {
+
+            List<CustomerOrderDTO> customerOrderDTOS = new ArrayList<>();
+            for (Orders order : orders) {
+
+                List<Order_item> orderItemList = orderItemRepo.findOrder_itemsByOrdersAndProduct_NameStartingWith(order,searchText);
+                for (Order_item orderItem : orderItemList) {
+
+                    if(orderItem.getProduct().getUser().getId() == Integer.parseInt(userId)) {
+                        CustomerOrderDTO customerOrderDTO = new CustomerOrderDTO();
+
+                        customerOrderDTO.setName(orderItem.getProduct().getName());
+                        customerOrderDTO.setOrderId(orderItem.getId());
+                        customerOrderDTO.setQty(orderItem.getQty());
+                        customerOrderDTO.setPrice(String.valueOf(orderItem.getPrice()));
+                        customerOrderDTO.setDate(String.valueOf(order.getDate_created()));
+                        customerOrderDTO.setStatus(orderItem.getOrder_status().getName());
+
+                        Product_image productImage = productImageRepo.findProduct_imageByProduct_id(orderItem.getProduct().getId());
+                        customerOrderDTO.setImageUrl(productImage.getImage_path1());
+                        customerOrderDTO.setCname(order.getUser().getName());
+                        customerOrderDTO.setCmobile(order.getUser().getMobile());
+                        customerOrderDTO.setCcity(order.getUser().getCity());
+                        customerOrderDTO.setCaddress(order.getUser().getAddress());
+                        customerOrderDTOS.add(customerOrderDTO);
+                    }
+
+
+                }
+            }
+            return customerOrderDTOS;
+        }
+
+
+        return null;
+    }
+
+    public String updateStatus(String orderId, String status) {
+
+        Order_item orderItem = orderItemRepo.findById(Integer.parseInt(orderId)).get();
+
+        if (status.equals("Processing")){
+            Order_status  orderStatus = orderStatusRepo.findById(2).get();
+            orderItem.setOrder_status(orderStatus);
+            return  "Packed";
+        }else if(status.equals("Packed")){
+            Order_status  orderStatus = orderStatusRepo.findById(3).get();
+            orderItem.setOrder_status(orderStatus);
+            return  "Dispatch";
+        }else if(status.equals("Dispatch")){
+            Order_status  orderStatus = orderStatusRepo.findById(4).get();
+            orderItem.setOrder_status(orderStatus);
+            return  "Deleverd";
+        }else {
+            return  "Deleverd";
+        }
+
+
+
+    }
+
 }

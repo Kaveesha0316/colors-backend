@@ -109,11 +109,11 @@ public class ProductService {
            myProductDTO.setAvqty(product.getQty());
            myProductDTO.setPrice(product.getPrice());
            myProductDTO.setStatus(product.getStatus().getId());
-            myProductDTO.setImgpath(productImageRepo.findProduct_imageByProduct_id(product.getId()).getImage_path1());
-            myProductDTO.setImgpath2(productImageRepo.findProduct_imageByProduct_id(product.getId()).getImage_path2());
-            myProductDTO.setImgpath3(productImageRepo.findProduct_imageByProduct_id(product.getId()).getImage_path3());
-            myProductDTO.setDescription(product.getDescription());
-            myProductDTO.setCategory(String.valueOf(product.getCategory().getId()));
+           myProductDTO.setImgpath(productImageRepo.findProduct_imageByProduct_id(product.getId()).getImage_path1());
+           myProductDTO.setImgpath2(productImageRepo.findProduct_imageByProduct_id(product.getId()).getImage_path2());
+           myProductDTO.setImgpath3(productImageRepo.findProduct_imageByProduct_id(product.getId()).getImage_path3());
+           myProductDTO.setDescription(product.getDescription());
+           myProductDTO.setCategory(String.valueOf(product.getCategory().getId()));
 
 
            for (Order_item orderItem : orderItems) {
