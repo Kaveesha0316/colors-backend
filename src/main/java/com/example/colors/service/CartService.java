@@ -1,14 +1,8 @@
 package com.example.colors.service;
 
 import com.example.colors.dto.Cart_DTO;
-import com.example.colors.entity.Cart;
-import com.example.colors.entity.Product;
-import com.example.colors.entity.Product_image;
-import com.example.colors.entity.User;
-import com.example.colors.repo.CartRepo;
-import com.example.colors.repo.ProductImageRepo;
-import com.example.colors.repo.ProductRepo;
-import com.example.colors.repo.UserRepo;
+import com.example.colors.entity.*;
+import com.example.colors.repo.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +27,17 @@ public class CartService {
 
     @Autowired
     UserRepo userRepo;
+
+    @Autowired
+    OrdersRepo ordersRepo;
+
+    @Autowired
+    OrderItemRepo orderItemRepo;
+
+    @Autowired
+    OrderStatusRepo orderStatusRepo;
+
+
 
     public String addToCart(String qty, String product_id,String user_id) {
 
@@ -103,5 +108,33 @@ public class CartService {
 
 
 
+    }
+
+    public Boolean removeperchesproduct(Integer userId,String total){
+        List<Cart> cartList = cartRepo.findCartByUser_IdOrderByDateDesc(userId);
+
+        Orders orders = new Orders();
+        orders.setUser(userRepo.findById(userId).get());
+        orders.setTotal_price(Double.parseDouble(total));
+        orders.setDate_created(new Date());
+        Orders savedorder = ordersRepo.save(orders);
+
+        for (Cart cart: cartList){
+            Product product = cart.getProduct();
+            product.setQty(product.getQty()-Integer.parseInt(cart.getQty()));
+
+            Order_item orderItem = new Order_item();
+            orderItem.setQty(cart.getQty());
+            orderItem.setProduct(product);
+            orderItem.setPrice(product.getPrice() * Integer.parseInt(cart.getQty()));
+            orderItem.setOrders(savedorder);
+            orderItem.setOrder_status(orderStatusRepo.findById(1).get());
+
+            orderItemRepo.save(orderItem);
+            productRepo.save(product);
+            cartRepo.deleteById(cart.getId());
+        }
+
+        return true;
     }
 }

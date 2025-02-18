@@ -64,4 +64,14 @@ public class CartController {
 
         return responseDTO;
     }
+
+    @GetMapping(value = "removeperchesproduct")
+    public ResponseDTO removeperchesproduct(@RequestParam("userId") String userId,@RequestParam("total") String total) {
+
+        ResponseDTO responseDTO = new ResponseDTO();
+       if(CartService.removeperchesproduct(Integer.parseInt(userId),total)){
+           responseDTO.setSuccess(true);
+       }
+        return responseDTO;
+    }
 }

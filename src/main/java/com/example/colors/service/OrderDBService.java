@@ -2,6 +2,7 @@ package com.example.colors.service;
 
 import com.example.colors.dto.CategoryProfitDTO;
 import com.example.colors.dto.CustomerOrderDTO;
+import com.example.colors.dto.ProductDTO;
 import com.example.colors.dto.ProfitResponseDTO;
 import com.example.colors.entity.Order_item;
 import com.example.colors.entity.Orders;
@@ -64,48 +65,58 @@ public class OrderDBService {
     }
 
     public String totalqty(String userId) {
-        List<Orders> orders = ordersRepo.findByUser_IdNotOrderByIdDesc(Integer.parseInt(userId));
+        List<Product> productList = productRepo.findProductsByUser_IdAndNameStartingWithOrderByIdDesc(Integer.parseInt(userId),"");
         Integer qty = 0;
-        if (orders != null) {
 
-            for (Orders order : orders) {
+        if (productList != null){
+            for (Product product: productList){
 
-                List<Order_item> orderItemList = orderItemRepo.findOrder_itemsByOrdersAndProduct_NameStartingWith(order,"");
-                for (Order_item orderItem : orderItemList) {
+                List<Order_item> orderItems = orderItemRepo.findOrder_itemsByProduct(product);
 
-                    if(orderItem.getProduct().getUser().getId() == Integer.parseInt(userId)) {
-                      qty +=Integer.parseInt(orderItem.getQty());
-
-                    }
-
-
+                for (Order_item orderItem:orderItems){
+                    qty +=Integer.parseInt(orderItem.getQty());
                 }
             }
-
         }
+
+        //        List<Orders> orders = ordersRepo.findByUser_IdNotOrderByIdDesc(Integer.parseInt(userId));
+//        Integer qty = 0;
+//        if (orders != null) {
+//
+//            for (Orders order : orders) {
+//
+//                List<Order_item> orderItemList = orderItemRepo.findOrder_itemsByOrdersAndProduct_NameStartingWith(order,"");
+//                for (Order_item orderItem : orderItemList) {
+//
+//                    if(orderItem.getProduct().getUser().getId() == Integer.parseInt(userId)) {
+//                      qty +=Integer.parseInt(orderItem.getQty());
+//
+//                    }
+//
+//
+//                }
+//            }
+//
+//        }
         return String.valueOf(qty);
     }
 
     public String totalprofit(String userId) {
-        List<Orders> orders = ordersRepo.findByUser_IdNotOrderByIdDesc(Integer.parseInt(userId));
+
+        List<Product> productList = productRepo.findProductsByUser_IdAndNameStartingWithOrderByIdDesc(Integer.parseInt(userId),"");
         Double profit = 0.0;
-        if (orders != null) {
 
-            for (Orders order : orders) {
+        if (productList != null){
+            for (Product product: productList){
 
-                List<Order_item> orderItemList = orderItemRepo.findOrder_itemsByOrdersAndProduct_NameStartingWith(order,"");
-                for (Order_item orderItem : orderItemList) {
+                List<Order_item> orderItems = orderItemRepo.findOrder_itemsByProduct(product);
 
-                    if(orderItem.getProduct().getUser().getId() == Integer.parseInt(userId)) {
-                        profit += orderItem.getPrice();
-
-                    }
-
-
+                for (Order_item orderItem:orderItems){
+                    profit += orderItem.getPrice();
                 }
             }
-
         }
+
 
         Double prof = profit - (profit * 10/100);
 
@@ -113,47 +124,77 @@ public class OrderDBService {
     }
 
     public String bestProduct(String userId) {
-        int userIdInt = Integer.parseInt(userId);
 
-        // Fetch all orders (where the user's products were sold)
-        List<Orders> orders = ordersRepo.findByUser_IdNotOrderByIdDesc(userIdInt);
+        List<Product> productList = productRepo.findProductsByUser_IdAndNameStartingWithOrderByIdDesc(Integer.parseInt(userId),"");
 
-        if (orders == null || orders.isEmpty()) {
-            return "No orders found.";
-        }
+        if (productList != null) {
+            Map<String, Double> productProfitMap = new HashMap<>();
+            for (Product product : productList) {
 
-        Map<String, Double> productProfitMap = new HashMap<>();
+                List<Order_item> orderItems = orderItemRepo.findOrder_itemsByProduct(product);
 
-        for (Orders order : orders) {
-            // Fetch all order items in the order
-            List<Order_item> orderItemList = orderItemRepo.findOrder_itemsByOrdersAndProduct_NameStartingWith(order, "");
-
-            for (Order_item orderItem : orderItemList) {
-                if (orderItem.getProduct().getUser().getId() == userIdInt) {
+                for (Order_item orderItem : orderItems) {
                     String productName = orderItem.getProduct().getName();
 
-                    // Calculate profit (selling price - cost price) * quantity
                     double profit = orderItem.getPrice();
 
-                    // Add profit to the map
                     productProfitMap.put(productName, productProfitMap.getOrDefault(productName, 0.0) + profit);
                 }
             }
-        }
 
-        // Find the product with the highest profit
-        String bestProfitProduct = null;
-        double maxProfit = 0.0;
 
-        for (Map.Entry<String, Double> entry : productProfitMap.entrySet()) {
-            if (entry.getValue() > maxProfit) {
-                maxProfit = entry.getValue();
-                bestProfitProduct = entry.getKey();
+            String bestProfitProduct = null;
+            double maxProfit = 0.0;
+
+            for (Map.Entry<String, Double> entry : productProfitMap.entrySet()) {
+                if (entry.getValue() > maxProfit) {
+                    maxProfit = entry.getValue();
+                    bestProfitProduct = entry.getKey();
+                }
             }
+
+
+//        Fetch all orders (where the user's products were sold)
+//        List<Orders> orders = ordersRepo.findByUser_IdNotOrderByIdDesc(userIdInt);
+//
+//        if (orders == null || orders.isEmpty()) {
+//            return "No orders found.";
+//        }
+//
+//        Map<String, Double> productProfitMap = new HashMap<>();
+//
+//        for (Orders order : orders) {
+//            // Fetch all order items in the order
+//            List<Order_item> orderItemList = orderItemRepo.findOrder_itemsByOrdersAndProduct_NameStartingWith(order, "");
+//
+//            for (Order_item orderItem : orderItemList) {
+//                if (orderItem.getProduct().getUser().getId() == userIdInt) {
+//                    String productName = orderItem.getProduct().getName();
+//
+//                    // Calculate profit (selling price - cost price) * quantity
+//                    double profit = orderItem.getPrice();
+//
+//                    // Add profit to the map
+//                    productProfitMap.put(productName, productProfitMap.getOrDefault(productName, 0.0) + profit);
+//                }
+//            }
+//        }
+//
+//        // Find the product with the highest profit
+//        String bestProfitProduct = null;
+//        double maxProfit = 0.0;
+//
+//        for (Map.Entry<String, Double> entry : productProfitMap.entrySet()) {
+//            if (entry.getValue() > maxProfit) {
+//                maxProfit = entry.getValue();
+//                bestProfitProduct = entry.getKey();
+//            }
+//        }
+
+            return bestProfitProduct;
         }
+        return "";
 
-        return bestProfitProduct;
     }
-
 
 }
