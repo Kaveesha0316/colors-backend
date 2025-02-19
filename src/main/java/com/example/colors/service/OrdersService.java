@@ -2,10 +2,7 @@ package com.example.colors.service;
 
 import com.example.colors.dto.CustomerOrderDTO;
 import com.example.colors.dto.MyOrderDTO;
-import com.example.colors.entity.Order_item;
-import com.example.colors.entity.Order_status;
-import com.example.colors.entity.Orders;
-import com.example.colors.entity.Product_image;
+import com.example.colors.entity.*;
 import com.example.colors.repo.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,42 +63,71 @@ public class OrdersService {
 
     public List<CustomerOrderDTO> loadCustomerOrders(String userId, String searchText) {
 
-        List<Orders> orders = orderRepo.findByUser_IdNotOrderByIdDesc(Integer.parseInt(userId));
-        if (orders != null) {
+        List<Product> productList = productRepo.findProductsByUser_IdAndNameStartingWithOrderByIdDesc(Integer.parseInt(userId),"");
 
-            List<CustomerOrderDTO> customerOrderDTOS = new ArrayList<>();
-            for (Orders order : orders) {
+        List<CustomerOrderDTO> customerOrderDTOS = new ArrayList<>();
+        if (productList != null){
 
-                List<Order_item> orderItemList = orderItemRepo.findOrder_itemsByOrdersAndProduct_NameStartingWith(order,searchText);
-                for (Order_item orderItem : orderItemList) {
+            for (Product product: productList){
 
-                    if(orderItem.getProduct().getUser().getId() == Integer.parseInt(userId)) {
-                        CustomerOrderDTO customerOrderDTO = new CustomerOrderDTO();
+                List<Order_item> orderItems = orderItemRepo.findOrder_itemsByProductAndProduct_NameStartingWith(product,searchText);
 
-                        customerOrderDTO.setName(orderItem.getProduct().getName());
-                        customerOrderDTO.setOrderId(orderItem.getId());
-                        customerOrderDTO.setQty(orderItem.getQty());
-                        customerOrderDTO.setPrice(String.valueOf(orderItem.getPrice()));
-                        customerOrderDTO.setDate(String.valueOf(order.getDate_created()));
-                        customerOrderDTO.setStatus(orderItem.getOrder_status().getName());
+                for (Order_item orderItem:orderItems){
+                    CustomerOrderDTO customerOrderDTO = new CustomerOrderDTO();
 
-                        Product_image productImage = productImageRepo.findProduct_imageByProduct_id(orderItem.getProduct().getId());
-                        customerOrderDTO.setImageUrl(productImage.getImage_path1());
-                        customerOrderDTO.setCname(order.getUser().getName());
-                        customerOrderDTO.setCmobile(order.getUser().getMobile());
-                        customerOrderDTO.setCcity(order.getUser().getCity());
-                        customerOrderDTO.setCaddress(order.getUser().getAddress());
-                        customerOrderDTOS.add(customerOrderDTO);
-                    }
+                    customerOrderDTO.setName(orderItem.getProduct().getName());
+                    customerOrderDTO.setOrderId(orderItem.getId());
+                    customerOrderDTO.setQty(orderItem.getQty());
+                    customerOrderDTO.setPrice(String.valueOf(orderItem.getPrice()));
+                    customerOrderDTO.setDate(String.valueOf(orderItem.getOrders().getDate_created()));
+                    customerOrderDTO.setStatus(orderItem.getOrder_status().getName());
 
-
+                    Product_image productImage = productImageRepo.findProduct_imageByProduct_id(orderItem.getProduct().getId());
+                    customerOrderDTO.setImageUrl(productImage.getImage_path1());
+                    customerOrderDTO.setCname(orderItem.getOrders().getUser().getName());
+                    customerOrderDTO.setCmobile(orderItem.getOrders().getUser().getMobile());
+                    customerOrderDTO.setCcity(orderItem.getOrders().getUser().getCity());
+                    customerOrderDTO.setCaddress(orderItem.getOrders().getUser().getAddress());
+                    customerOrderDTOS.add(customerOrderDTO);
                 }
             }
-            return customerOrderDTOS;
         }
+        return customerOrderDTOS;
+//        List<Orders> orders = orderRepo.findByUser_IdNotOrderByIdDesc(Integer.parseInt(userId));
+//        if (orders != null) {
+//
+//            List<CustomerOrderDTO> customerOrderDTOS = new ArrayList<>();
+//            for (Orders order : orders) {
+//
+//                List<Order_item> orderItemList = orderItemRepo.findOrder_itemsByOrdersAndProduct_NameStartingWith(order,searchText);
+//                for (Order_item orderItem : orderItemList) {
+//
+//                    if(orderItem.getProduct().getUser().getId() == Integer.parseInt(userId)) {
+//                        CustomerOrderDTO customerOrderDTO = new CustomerOrderDTO();
+//
+//                        customerOrderDTO.setName(orderItem.getProduct().getName());
+//                        customerOrderDTO.setOrderId(orderItem.getId());
+//                        customerOrderDTO.setQty(orderItem.getQty());
+//                        customerOrderDTO.setPrice(String.valueOf(orderItem.getPrice()));
+//                        customerOrderDTO.setDate(String.valueOf(order.getDate_created()));
+//                        customerOrderDTO.setStatus(orderItem.getOrder_status().getName());
+//
+//                        Product_image productImage = productImageRepo.findProduct_imageByProduct_id(orderItem.getProduct().getId());
+//                        customerOrderDTO.setImageUrl(productImage.getImage_path1());
+//                        customerOrderDTO.setCname(order.getUser().getName());
+//                        customerOrderDTO.setCmobile(order.getUser().getMobile());
+//                        customerOrderDTO.setCcity(order.getUser().getCity());
+//                        customerOrderDTO.setCaddress(order.getUser().getAddress());
+//                        customerOrderDTOS.add(customerOrderDTO);
+//                    }
+//
+//
+//                }
+//            }
+//            return customerOrderDTOS;
+//        }
 
 
-        return null;
     }
 
     public String updateStatus(String orderId, String status) {

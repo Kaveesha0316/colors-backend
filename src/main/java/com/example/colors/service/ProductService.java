@@ -103,7 +103,7 @@ public class ProductService {
             myProductDTO.setPrice(product.getPrice());
 
 
-           List<Order_item> orderItems = orderItemRepo.findOrder_itemsByProduct(product);
+           List<Order_item> orderItems = orderItemRepo.findOrder_itemsByProductAndProduct_NameStartingWith(product,searchText);
 
            Integer sell_quantity = 0;
            myProductDTO.setAvqty(product.getQty());

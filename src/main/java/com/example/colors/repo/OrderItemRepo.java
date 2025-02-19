@@ -12,7 +12,7 @@ import java.util.List;
 public interface OrderItemRepo extends JpaRepository<Order_item,Integer> {
 
 
-    List<Order_item> findOrder_itemsByProduct(@Param("product") Product product);
+    List<Order_item> findOrder_itemsByProductAndProduct_NameStartingWith(@Param("product") Product product,String name);
     List<Order_item> findOrder_itemsByOrdersAndProduct_NameStartingWith(Orders order, String name);
 
 }

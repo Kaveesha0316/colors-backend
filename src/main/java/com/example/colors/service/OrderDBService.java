@@ -71,7 +71,7 @@ public class OrderDBService {
         if (productList != null){
             for (Product product: productList){
 
-                List<Order_item> orderItems = orderItemRepo.findOrder_itemsByProduct(product);
+                List<Order_item> orderItems = orderItemRepo.findOrder_itemsByProductAndProduct_NameStartingWith(product,"");
 
                 for (Order_item orderItem:orderItems){
                     qty +=Integer.parseInt(orderItem.getQty());
@@ -109,7 +109,7 @@ public class OrderDBService {
         if (productList != null){
             for (Product product: productList){
 
-                List<Order_item> orderItems = orderItemRepo.findOrder_itemsByProduct(product);
+                List<Order_item> orderItems = orderItemRepo.findOrder_itemsByProductAndProduct_NameStartingWith(product,"");
 
                 for (Order_item orderItem:orderItems){
                     profit += orderItem.getPrice();
@@ -131,7 +131,7 @@ public class OrderDBService {
             Map<String, Double> productProfitMap = new HashMap<>();
             for (Product product : productList) {
 
-                List<Order_item> orderItems = orderItemRepo.findOrder_itemsByProduct(product);
+                List<Order_item> orderItems = orderItemRepo.findOrder_itemsByProductAndProduct_NameStartingWith(product,"");
 
                 for (Order_item orderItem : orderItems) {
                     String productName = orderItem.getProduct().getName();
