@@ -39,4 +39,6 @@ public interface ProductRepo extends JpaRepository<Product,Integer> {
             @Param("categoryName") String categoryName,
             @Param("productId") Integer productId
     );
+
+     List<Product> findAllByOrderByIdDesc();
 }
