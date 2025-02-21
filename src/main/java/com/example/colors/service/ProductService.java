@@ -120,7 +120,12 @@ public class ProductService {
              sell_quantity += Integer.parseInt(orderItem.getQty());
            }
             myProductDTO.setSelqty(sell_quantity);
-           myProductDTO.setProfit((product.getPrice()*sell_quantity)-(product.getPrice()*10/100));
+
+           if((product.getPrice()*sell_quantity)-(product.getPrice()*10/100) < 0.0){
+               myProductDTO.setProfit(0.0);
+           }else {
+               myProductDTO.setProfit(((product.getPrice()- (product.getPrice() * 10 / 100)) * sell_quantity) );
+           }
            myProductDTOS.add(myProductDTO);
         }
         return myProductDTOS;

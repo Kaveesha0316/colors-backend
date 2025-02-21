@@ -14,7 +14,7 @@
   <link href="css/ruang-admin.min.css" rel="stylesheet">
 </head>
 
-<body onload="totalerning();" id="page-top">
+<body onload="totalerning(); totalcart(); totalusers(); totalsales(); getUsername();" id="page-top">
   <div  id="wrapper">
     <!-- Sidebar -->
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
@@ -109,7 +109,7 @@
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <img class="img-profile rounded-circle" src="img/boy.png" style="max-width: 60px">
-                <span class="ml-2 d-none d-lg-inline text-white small">Maman Ketoprak</span>
+                <span id="name" class="ml-2 d-none d-lg-inline text-white small">Maman Ketoprak</span>
               </a>
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target="#logoutModal">
@@ -140,7 +140,7 @@
                   <div class="row align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-uppercase mb-1">Total Earnings</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">Rs.40,000.00</div>
+                      <div id="total" class="h5 mb-0 font-weight-bold text-gray-800">Rs.40,000.00</div>
                     
                     </div>
                     <div class="col-auto">
@@ -157,7 +157,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-uppercase mb-1">Total Sales</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">650</div>
+                      <div id="sales" class="h5 mb-0 font-weight-bold text-gray-800">650</div>
                      
                     </div>
                     <div class="col-auto">
@@ -174,7 +174,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-uppercase mb-1">Total Users</div>
-                      <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">366</div>
+                      <div id="users" class="h5 mb-0 mr-3 font-weight-bold text-gray-800">366</div>
                      
                     </div>
                     <div class="col-auto">
@@ -191,7 +191,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-uppercase mb-1">Pending Carts</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                      <div id="carts" class="h5 mb-0 font-weight-bold text-gray-800">18</div>
                      
                     </div>
                     <div class="col-auto">
@@ -238,7 +238,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
-                  <a href="login.html" class="btn btn-primary">Logout</a>
+                  <a onclick="signOut();" href="#" class="btn btn-primary">Logout</a>
                 </div>
               </div>
             </div>

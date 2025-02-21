@@ -65,7 +65,6 @@ public class UserService {
 
        User updatedUser = userRepo.save(user);
 
-
         return updatedUser;
     }
 

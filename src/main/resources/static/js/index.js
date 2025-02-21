@@ -156,17 +156,141 @@ console.log("sda")
 
 async function totalerning(){
  console.log('order List:');
-}
+
 const response = await fetch(
-            'http://localhost:8080/colors/admin/totalerning);
+            'http://localhost:8080/colors/admin/totalerning');
 
     if (response.ok) {
 
-   const orderlist = await response;
+   const value = await response.json();
+   document.getElementById("total").innerHTML = "Rs."+value+".00";
 
-          console.log('order List:', orderlist);
 
     } else {
 
+    }
+}
+
+async function totalsales(){
+ console.log('order List:');
+
+const response = await fetch(
+            'http://localhost:8080/colors/admin/totalsales');
+
+    if (response.ok) {
+
+   const value = await response.json();
+   document.getElementById("sales").innerHTML = value;
+
+
+    } else {
+
+    }
+}
+
+async function totalusers(){
+ console.log('order List:');
+
+const response = await fetch(
+            'http://localhost:8080/colors/admin/totalusers');
+
+    if (response.ok) {
+
+   const value = await response.json();
+   document.getElementById("users").innerHTML = value;
+
+
+    } else {
+
+    }
+}
+
+async function totalcart(){
+ console.log('order List:');
+
+const response = await fetch(
+            'http://localhost:8080/colors/admin/totalcart');
+
+    if (response.ok) {
+
+   const value = await response.json();
+   document.getElementById("carts").innerHTML = value;
+
+
+    } else {
+
+    }
+}
+
+ async function signIn() {
+     const user_dto = {
+         email: document.getElementById("email").value,
+         password: document.getElementById("password").value,
+     };
+
+     const response = await fetch("http://localhost:8080/colors/admin/signin", {
+         method: "POST",
+         body: JSON.stringify(user_dto),
+         headers: {
+             "Content-Type": "application/json"  // Correct header
+         }
+     });
+
+     if (response.ok) {
+         const json = await response.json();
+         console.log(json);
+         if (json.success) {
+             window.location = "index.html";
+         } else {
+            Swal.fire({
+                title: 'Oops..!',
+                text: json.message,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+         }
+     } else {
+        console.log("asds")
+     }
+ }
+
+ async function getUsername() {
+     const response = await fetch("http://localhost:8080/colors/admin/get-username", {
+         method: "GET",
+         credentials: "include", // Ensures session cookies are sent with the request
+     });
+
+     if (response.ok) {
+         const username = await response.text(); // Backend returns a plain text response
+         console.log("Logged-in user:", username);
+         document.getElementById("name").innerText = `Welcome, ${username}`;
+     } else {
+         console.log("No active session.");
+         window.location = "login.html";
+     }
+ }
+
+async function signOut() {
+    try {
+        const response = await fetch("http://localhost:8080/colors/admin/signout", {
+            method: "POST",
+            credentials: "include" // Ensure session cookies are sent
+        });
+
+        if (response.ok) {
+            const json = await response.json();
+            if (json.success) {
+                // Redirect to the login page after successful sign-out
+                window.location = "login.html";
+            } else {
+                console.error("Sign out failed:", json.message);
+                document.getElementById("message").innerText = json.message;
+            }
+        } else {
+            document.getElementById("message").innerText = "Sign out failed. Try again later.";
+        }
+    } catch (error) {
+        console.error("Error during sign out:", error);
+        document.getElementById("message").innerText = "An error occurred during sign out.";
     }
 }

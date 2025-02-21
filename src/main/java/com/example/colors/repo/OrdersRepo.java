@@ -15,4 +15,5 @@ public interface OrdersRepo extends JpaRepository<Orders, Integer> {
 
     @Query("SELECT o FROM Order_item o WHERE o.product.user.id = :userId")
     List<Order_item> findOrdersByUser_Id(int userId);
+
 }
