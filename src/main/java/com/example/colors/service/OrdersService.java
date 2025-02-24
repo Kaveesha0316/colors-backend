@@ -93,40 +93,6 @@ public class OrdersService {
             }
         }
         return customerOrderDTOS;
-//        List<Orders> orders = orderRepo.findByUser_IdNotOrderByIdDesc(Integer.parseInt(userId));
-//        if (orders != null) {
-//
-//            List<CustomerOrderDTO> customerOrderDTOS = new ArrayList<>();
-//            for (Orders order : orders) {
-//
-//                List<Order_item> orderItemList = orderItemRepo.findOrder_itemsByOrdersAndProduct_NameStartingWith(order,searchText);
-//                for (Order_item orderItem : orderItemList) {
-//
-//                    if(orderItem.getProduct().getUser().getId() == Integer.parseInt(userId)) {
-//                        CustomerOrderDTO customerOrderDTO = new CustomerOrderDTO();
-//
-//                        customerOrderDTO.setName(orderItem.getProduct().getName());
-//                        customerOrderDTO.setOrderId(orderItem.getId());
-//                        customerOrderDTO.setQty(orderItem.getQty());
-//                        customerOrderDTO.setPrice(String.valueOf(orderItem.getPrice()));
-//                        customerOrderDTO.setDate(String.valueOf(order.getDate_created()));
-//                        customerOrderDTO.setStatus(orderItem.getOrder_status().getName());
-//
-//                        Product_image productImage = productImageRepo.findProduct_imageByProduct_id(orderItem.getProduct().getId());
-//                        customerOrderDTO.setImageUrl(productImage.getImage_path1());
-//                        customerOrderDTO.setCname(order.getUser().getName());
-//                        customerOrderDTO.setCmobile(order.getUser().getMobile());
-//                        customerOrderDTO.setCcity(order.getUser().getCity());
-//                        customerOrderDTO.setCaddress(order.getUser().getAddress());
-//                        customerOrderDTOS.add(customerOrderDTO);
-//                    }
-//
-//
-//                }
-//            }
-//            return customerOrderDTOS;
-//        }
-
 
     }
 

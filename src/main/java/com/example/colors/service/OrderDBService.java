@@ -79,25 +79,6 @@ public class OrderDBService {
             }
         }
 
-        //        List<Orders> orders = ordersRepo.findByUser_IdNotOrderByIdDesc(Integer.parseInt(userId));
-//        Integer qty = 0;
-//        if (orders != null) {
-//
-//            for (Orders order : orders) {
-//
-//                List<Order_item> orderItemList = orderItemRepo.findOrder_itemsByOrdersAndProduct_NameStartingWith(order,"");
-//                for (Order_item orderItem : orderItemList) {
-//
-//                    if(orderItem.getProduct().getUser().getId() == Integer.parseInt(userId)) {
-//                      qty +=Integer.parseInt(orderItem.getQty());
-//
-//                    }
-//
-//
-//                }
-//            }
-//
-//        }
         return String.valueOf(qty);
     }
 
@@ -154,42 +135,6 @@ public class OrderDBService {
             }
 
 
-//        Fetch all orders (where the user's products were sold)
-//        List<Orders> orders = ordersRepo.findByUser_IdNotOrderByIdDesc(userIdInt);
-//
-//        if (orders == null || orders.isEmpty()) {
-//            return "No orders found.";
-//        }
-//
-//        Map<String, Double> productProfitMap = new HashMap<>();
-//
-//        for (Orders order : orders) {
-//            // Fetch all order items in the order
-//            List<Order_item> orderItemList = orderItemRepo.findOrder_itemsByOrdersAndProduct_NameStartingWith(order, "");
-//
-//            for (Order_item orderItem : orderItemList) {
-//                if (orderItem.getProduct().getUser().getId() == userIdInt) {
-//                    String productName = orderItem.getProduct().getName();
-//
-//                    // Calculate profit (selling price - cost price) * quantity
-//                    double profit = orderItem.getPrice();
-//
-//                    // Add profit to the map
-//                    productProfitMap.put(productName, productProfitMap.getOrDefault(productName, 0.0) + profit);
-//                }
-//            }
-//        }
-//
-//        // Find the product with the highest profit
-//        String bestProfitProduct = null;
-//        double maxProfit = 0.0;
-//
-//        for (Map.Entry<String, Double> entry : productProfitMap.entrySet()) {
-//            if (entry.getValue() > maxProfit) {
-//                maxProfit = entry.getValue();
-//                bestProfitProduct = entry.getKey();
-//            }
-//        }
 
             return bestProfitProduct;
         }
