@@ -88,6 +88,7 @@ public class OrdersService {
                     customerOrderDTO.setCmobile(orderItem.getOrders().getUser().getMobile());
                     customerOrderDTO.setCcity(orderItem.getOrders().getUser().getCity());
                     customerOrderDTO.setCaddress(orderItem.getOrders().getUser().getAddress());
+                    customerOrderDTO.setClocation(orderItem.getOrders().getUser().getLocation());
                     customerOrderDTOS.add(customerOrderDTO);
                 }
             }

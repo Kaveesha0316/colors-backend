@@ -3,7 +3,7 @@ package com.example.colors.model;
 public class Validation {
 
     public static boolean isPasswordValid(String password) {
-        return password.matches("^(?=.[a-z])(?=.[A-Z])(?=.\\d)(?=.[@#$%^&+=]).{8,}$");
+        return password.matches("^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$");
     }
     public static boolean isMobileNumberValid(String mobile) {
         return mobile.matches("^07[0-9]{8}$");

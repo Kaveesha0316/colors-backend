@@ -24,13 +24,13 @@ public class UserController {
             responseDTO.setContent("Invalid email address");
             System.out.println("Invalid email address");
         }
-//        else if (!Validation.isPasswordValid(userDTO.getPassword())) {
-//            responseDTO.setContent("Invalid password");
-//            System.out.println("Invalid email password");
-//        }
+        else if (!Validation.isPasswordValid(userDTO.getPassword())) {
+            responseDTO.setContent("Invalid password");
+            System.out.println("Invalid password password");
+        }
         else if (!Validation.isMobileNumberValid(userDTO.getMobile())) {
             responseDTO.setContent("Invalid mobile number");
-            System.out.println("Invalid email number");
+            System.out.println("Invalid mobile number");
         }
         else{
 

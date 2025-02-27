@@ -34,9 +34,20 @@ public class User {
     @Column(name = "image_path")
     private String image_path;
 
+    @Column(name = "location",length = 50)
+    private String location;
+
     @ManyToOne
     @JoinColumn(name = "status_id")
     private Status status;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     public int getId() {
         return id;

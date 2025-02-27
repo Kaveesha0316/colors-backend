@@ -55,12 +55,14 @@ public class UserService {
 
     public User profileUpdateUser(UserDTO userDTO){
         User user = userRepo.findById(userDTO.getId()).get();
+        System.out.println(userDTO.getLocation());
 
         user.setName(userDTO.getName());
         user.setMobile(userDTO.getMobile());
         user.setPassword(userDTO.getPassword());
         user.setAddress(userDTO.getAddress());
         user.setCity(userDTO.getCity());
+        user.setLocation(userDTO.getLocation());
         user.setImage_path(userDTO.getImage_path());
 
        User updatedUser = userRepo.save(user);

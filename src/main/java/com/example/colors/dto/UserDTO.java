@@ -8,11 +8,20 @@ public class UserDTO {
     private String mobile;
     private String address;
     private String city;
+    private String location;
     private String image_path;
 
     // Getters and Setters
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
